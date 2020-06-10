@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/public/lib/bootstrap/dist/css/bootstrap.css">
+    <!-- 
+        注意：在服务端中，文件中的路径就不要去写相对路径了
+        因为这个时候所有的资源都是通过 url 标识来获取的
+        我们的服务器开放了 /public/ 目录
+        所以这里的请求路径都写成：/public/xxx
+        / 在这里就是 url 根路径的意思
+        浏览器在真正发请求的时候会把http://127.0.0.1:3000拼上
+     -->
+</head>
+<body>
+    <!-- <img src="/public/img/timg.jpg" alt="" style="text-align: center;"> -->
+    <div class="header container">
+        <div class="page-header">
+            <h1>Example page header <small>Subtext for header</small></h1>
+            <a class="btn btn-success" href="/post">发表留言</a>
+        </div>
+    </div>
+    <div class="comments container">
+        <ul class="list-group">
+            {{each comments}}
+            <li class="list-group-item">{{ $value.name }}说：{{ $value.message }} <span class="pull-right">{{ $value.dateTime }}</span></li>
+            {{/each}}
+            <!-- <li class="list-group-item">Dapibus ac facilisis</li>
+            <li class="list-group-item">Morbi leo risus</li>
+            <li class="list-group-item">Porata ac consectetur</li>
+            <li class="list-group-item">Vestibulum at eros</li>
+            <li class="list-group-item">Vestibulum at eros</li>
+            <li class="list-group-item">Vestibulum at eros</li>
+            <li class="list-group-item">Vestibulum at eros</li>
+            <li class="list-group-item">Vestibulum at eros</li>
+            <li class="list-group-item">Vestibulum at eros</li>
+            <li class="list-group-item">Vestibulum at eros</li>
+            <li class="list-group-item">Vestibulum at eros</li>
+            <li class="list-group-item">Vestibulum at eros</li>
+            <li class="list-group-item">Vestibulum at eros</li>
+            <li class="list-group-item">Vestibulum at eros</li> -->
+        </ul>
+    </div>
+</body>
+</html>

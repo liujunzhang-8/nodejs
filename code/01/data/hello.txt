@@ -1,0 +1,2 @@
+hello Node.js!
+你好，欢迎来到Node.js 的世界！

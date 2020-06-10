@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./template-web.js"></script>
+</head>
+<body>
+    <!-- 强调：模板引擎不关心你的字符串内容，只关心自己能认识的模板标记语法，例如 {{}} {{}} 语法被称为 mustache 语法 -->
+    <script type="text/template" id="tpl">
+        hello {{ name }}
+    </script>
+
+    <script>
+        var ret = template('tpl', {
+            name: 'Jack'
+        })
+        console.log(ret)
+    </script>
+</body>
+</html>

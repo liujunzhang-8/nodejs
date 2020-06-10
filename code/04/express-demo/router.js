@@ -1,0 +1,15 @@
+app.get('/', function (req, res) {
+    // res.write('hello ')
+    // res.write('world ')
+    // res.end()
+    // res.end('hello world')
+
+    res.send('hello world')
+})
+
+// 路由其实就是一张表
+// 这个表里面有具体的映射关系
+app
+    .get('/login', )
+    .get('./dada', 函数)
+    .post('./adafda', 函数)
