@@ -183,6 +183,18 @@
       app.set('views', 目录路径)
       ```
 
+      ### 在Express 中获取表单 GET 请求参数
+
+      Express 内置了一个 API ，可以直接通过 `req,query` 来获取
+
+      ```
+      req.query
+      ```
+
+      
+
+      
+
       ### 在Express 获取表单POST 请求体数据
 
       ​	在Express中没有内置获取表单POST请求体的API，这里需要一个第三方包： `body-parser`
@@ -196,10 +208,38 @@
       配置
 
       ```
-      var 
+      var express = require('express')
+      
+      // 0、引包
       ```
 
-      
+      自己编写的步骤：
+
+      	- 处理模板
+      	- 配置开放静态资源
+      	- 配置模板引擎
+      	- 简单路由： /students 渲染静态页出来
+      	- 路由设计
+      	- 提取路由模块
+      	- 由于接下来一系列的业务操作都需要处理文件数据，所以我们需要封装 student.js
+       - 先写好 student.js 文件结构
+         	- 查询所有学生列表的 api find
+         	- findByid
+         	- save
+         	- updateByid
+         	- deleteByid
+      - 实现具体功能
+        - 通过路由收到请求
+          - 接收请求中的数据（get, post）
+            - req.query
+            - req.body
+          - 调用数据操作API　处理数据
+          - 根据操作结果给客户端发送响应
+      - 业务功能顺序
+        - 列表
+        - 添加
+        - 编辑
+        - 删除
 
 - MongoDB
 
