@@ -116,6 +116,39 @@ npm5 以后才加入这个文件
   - 我们的目的是希望锁住1.1.1 这个版本
   - 所以这个`package-lock.json` 这个文件的另一个作用就是锁定版本，防止自动升级
 
+回调函数
+
+	+ 异步编程
+	+ 如果需要得到一个函数内部异步操作的结果，这是时候必须通过回调函数来获取
+	+ 在调用的位置传递一个函数进来
+	+ 在封装的函数内部调用传递进来的函数
+
+find、findIndex、forEach
+
++ 数组的遍历方法，都是对函数作为参数的一种运用
++ every
++ some
++ includes
++ map
++ reduce
+
+package-lock.json 文件的作用
+
++ 下载速度快了
++ 锁定版本
+
+JavaScript 模块化
+
++ Node 中的 CommonJS
++ 浏览器中的
+  + AMD require.js
+  + CMD sea.js
++ EcmaScript 官方在 EcmaScript 6 中增加了官方支持
++ EcmaScript 6
++ 后面学习编译工具
+
+MongoDB 数据库
+
 # MongoDB
 
 ## 关系型数据库和非关系型数据库
@@ -125,7 +158,7 @@ npm5 以后才加入这个文件
 或者说表与表之间存在关系
 
 - 所有的关系型数据库都需要通过`sql`语言来操作
-- 所有的关系型数据库在操作之前都需要设计表机构
+- 所有的关系型数据库在操作之前都需要设计表结构
 - 而且数据表还支持约束
   - 唯一的
   - 主键
@@ -139,3 +172,240 @@ npm5 以后才加入这个文件
   - 表记录 —> (文档对象)
 - MongoDB 不需要设计表结构
 - 也就是说你可以任意的往里面存数据，没有结构性这么一说
+
+### 安装
+
+- 下载
+- 安装
+- 配置环境变量
+- 最后输入 `mongod --version` 测试
+
+### 启动和关闭数据库
+
+启动：
+
+```shell
+# mongodb 默认使用执行 mongod 命令所处盘符根目录下的 /data/db 作为自己的数据存储目录
+# 所以在第一次执行该命令之前先自己手动新建一个 /data/db
+mongod
+```
+
+如果想要修改默认的存储目录，可以：
+
+```
+mongod --dbpath=数据存储目录路径
+```
+
+停止：
+
+```
+在开启服务的控制台，直接 ctrl + c 即可停止
+或者直接关闭开启服务的控制台也可以
+```
+
+### 连接数据库
+
+连接：
+
+```shell
+# 该命令默认连接本机的 MongoDB 服务
+mongo
+```
+
+退出：
+
+```she
+# 在连接状态输入 exit 退出连接
+exit
+```
+
+基本命令
+
++ `shou dbs`
+  + 查看显示所有数据库
++ `db`
+  + 查看当前操作的数据库
++ `use 数据库名称`
+  + 切换到指定的数据（如果没有会新建）
+
++ 插入数据
+
+### 在Node中如何操作 MongoDB 数据
+
+#### 使用官方的 `MongoDB` 包来操作
+
+#### 使用第三方 mongoose 来操作 MongoDB数据库
+
+第三方包： `mongoose` 基于 MongoDB 
+
+## 1、MongoDB 数据库的基本概念
+
++ 数据库
++ 一个数据库中可以有多个集合（表）
++ 一个集合中可以有多个文档（表记录）
++ 文档结构很灵活，没有任何限制
++ MongoDB 非常灵活，不需要像 MySQL 一样先创建数据库、表、设计表结构
+  + 在这里只需要：当你需要插入数据的时候，只需要指定往哪个数据库的哪个集合操作就可以了
+  + 一切都由MongoDB来帮你自动完成建库建表这件事
+
+```javascript
+{
+    qq: {
+       users: [
+           {name: '张三', age: 15},
+           {name: '李四', age: 13},
+           {name: '王五', age: 10}，
+           {name: '狗蛋', age: 15}
+       ],
+       products: [
+           
+       ],
+       ...
+    },
+    taobao: {
+        
+    },
+   	baidu: {
+        
+    }
+}
+```
+
+### 官方指南
+
+#### 1.1、设计Scheme 发布 Model
+
+```javascript
+var mongoose = require('mongoose')
+var Schema = mongoose.Schema
+
+// 1、连接数据库
+// 指定连接的数据库不需要存在，当你插入第一条数据之后就会自动被创建出来
+mongoose.connect('mongodb://localhost/test')
+
+// 2、设计文档结构（表结构）
+// 字段名称就是表结构中的属性名称
+// 约束的目的是为了保证数据的完整性，不要有脏数据
+var userSchema = new Schema({
+    username: {
+        type: String,
+        required: true // 必须有
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String
+    }
+}) 
+
+// 3、将文档结构发布为模型
+// mongoose.model 方法就是用来将一个架构发布为 model
+/* 
+    第一个参数： 传入一个大写名词单数字符串用来表示你的数据库的名称
+                mongoose 会自动将大写名词的字符串生成 小写复数 的集合名称
+                例如这里的 User 最终会变为 users 集合名称
+    第二个参数： 架构 Schema
+    返回值：模型构造函数
+*/
+
+var User = mongoose.model('User', userSchema);
+
+// 4、当我们有了模型构造函数之后，就可以使用这个构造函数对 user 集合中的数据为所欲为了
+
+```
+
+#### 1.2、增加数据
+
+```javasc
+var admin = new User({
+    username: 'admin',
+    password: '123456',
+    email: 'admin@admin.com'
+})
+admin.save(function (err, ret) {
+    if (err) {
+        console.log('保存失败')
+    } else {
+        console.log('保存成功')
+        console.log(ret)
+    }
+})
+```
+
+#### 1,3、查询数据
+
+查询所有：
+
+```js
+User.find(function (err,ret) {
+    if (err) {
+        console.log('查询失败')
+    } else {
+        console.log(ret)
+    }
+})
+```
+
+按条件查询所有：
+
+```js
+User.find({
+    username: 'zs'
+}, function (err, ret) {
+    if (err) {
+        console.log('查询失败')
+    } else {
+        console.log(ret)
+    }
+})
+```
+
+按条件查询单个：
+
+```javascript
+User.findOne({
+    username: 'zs',
+    password: '123456'
+}, function (err, ret) {
+    if (err) {
+        console.log('查询失败')
+    } else {
+        console.log(ret)
+    }
+})
+```
+
+#### 1.4、删除数据
+
+```js
+User.remove({
+    username: 'zs'}, function (err, ret) {
+    if (err) {
+        console.log('删除失败')
+    } else {
+        console.log('删除成功')
+        console.log(ret)
+    }
+})
+```
+
+#### 1.5、更新数据
+
+```js
+User.findByIdAndUpdate(
+    '5ee3b9580653f2194c990866',
+    {password: '123'},
+function (err, ret) {
+    if (err) {
+        console.log('更新失败')
+    } else {
+        console.log('更新成功')
+        console.log(ret)
+    }
+}) 
+```
+
+
+
