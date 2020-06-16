@@ -100,7 +100,8 @@ router.post('/students/edit', function (req, res) {
             student。update()
         3、发送响应
     */
-    Student.updateById(req.body, function (err) {
+    var id = req.body.id.replace(/"/g, '')
+    Student.findByIdAndUpdate(id, req.body, function (err) {
         if (err) {
             return res.status(500).send('Server error.')
         }
@@ -116,7 +117,8 @@ router.get('/students/delete', function (req, res) {
         2、根据 id 执行删除操作
         3、根据操作结果发送响应数据
     */
-    Student.deleteById(req.query.id, function (err) {
+    var id = req.query.id.replace(/"/g, '') 
+    Student.findByIdAndRemove(id, function (err) {
         if (err) {
             return res.status(500).send('Server error.')
         }

@@ -54,13 +54,13 @@ admin.save(function (err, ret) {
 }) */
 
 // 查询数据
-/* User.find(function (err,ret) {
+User.find(function (err,ret) {
     if (err) {
         console.log('查询失败')
     } else {
         console.log(ret)
     }
-}) */
+})
 
 /* User.findOne({
     username: 'zs',
@@ -95,4 +95,4 @@ function (err, ret) {
         console.log('更新成功')
         console.log(ret)
     }
-}) 
+})

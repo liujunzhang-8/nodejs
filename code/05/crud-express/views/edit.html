@@ -74,7 +74,7 @@
                     <!-- 
                         用来放一些不希望被用户看到，但是需要被提交到服务端的数据
                      -->
-                    <input type="hidden" name="id" value="{{ student.id }}">
+                    <input type="hidden" name="id" value="{{ student._id }}">
                     <div class="form-group">
                         <label for="">姓名</label>
                         <input type="text" class="form-control" name="name" id="" placeholder="name" value="{{ student.name }}">
