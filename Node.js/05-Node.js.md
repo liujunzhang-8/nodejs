@@ -147,6 +147,125 @@ JavaScript 模块化
 + EcmaScript 6
 + 后面学习编译工具
 
+### promise
+
+```js
+var fs = require('fs')
+
+fs.readFile('./data/a.txt', 'utf8', function(err, data) {
+    // body...
+    if(err) {
+        // return console.log('读取失败')
+        // 抛出异常
+        //  1、阻止程序的执行
+        //  2、把错误消息打印到控制台
+        throw err
+    }
+    console.log(data)
+    fs.readFile('./data/b.txt', 'utf8', function (err, data) {
+        // body...
+        if (err) {
+            // return console.log('读取失败')
+            // 抛出异常
+            //  1、阻止程序的执行
+            //  2、把错误消息打印到控制台
+            throw err
+        }
+        console.log(data)
+
+        fs.readFile('./data/c.txt', 'utf8', function (err, data) {
+            // body...
+            if (err) {
+                // return console.log('读取失败')
+                // 抛出异常
+                //  1、阻止程序的执行
+                //  2、把错误消息打印到控制台
+                throw err
+            }
+            console.log(data)
+        })
+    })
+})
+```
+
+为了解决以上编码方式带来的问题（回调地狱嵌套）, 所以在 EcmaScript 6 中新增了一个API：`Promise`
+
+- Promise 的英文就是承诺，保证的意思 （I promise you）
+
+Promise 基本语法：
+
+```js
+var fs = require('fs')
+
+// 在 ES6 中新增了一个 API Promise
+// Promise 是一个构造函数
+
+// 创建 Promise 容器
+// 1、给别人一个承诺
+//      Promise 容器一旦创建，就开始之星里面的代码
+var p1 = new Promise(function (resolve, reject) {
+    fs.readFile('./data/a.txt', 'utf8', function (err, data) {
+        if (err) {
+            // 失败了，承诺容器中的任务失败了
+            // console.log(err)
+            // 把容器的 Pending 状态变为 Rejected
+
+            // 调用 reject 就相当于调用了 then 方法的第二个参数函数
+            reject(err)
+        } else {
+            // 承诺容器中的任务成功了
+            // console.log(data)
+            // 把容器的 Pending 状态改为成功 Resolved
+            // 也就是说这里调用的 resolve 方法实际上就是 then 方法传递的那个 function
+            resolve(data)
+        }
+    })
+})
+
+// p1 就是那个承诺
+// 当 p1 成功了 然后（then）做指定的操作
+// then 方法接收的 function 就是容器中的 resolve 函数
+p1
+    .then(function (data) {
+        console.log(data)
+    }, function (err) {
+        console.log('读取文件失败了', err)
+    })
+```
+
+封装 Promise 版本的 `readFile` :
+
+```js
+var fs = require('fs')
+
+function pReadFile(filePath) {
+    return new Promise(function (resolve, reject) {
+        fs.readFile(filePath, 'utf8', function (err, data) {
+            if (err) {
+                reject(err)
+            } else {
+                resolve(data)
+            }
+        })
+    })
+}
+
+pReadFile('./data/a.txt')
+    .then(function (data) {
+        console.log(data)
+        return pReadFile('./data/b.txt')
+    })
+    .then(function (data) {
+        console.log(data)
+        return pReadFile('./data/c.txt')
+    })
+    .then(function (data) {
+        console.log(data)
+    })
+```
+
+
+
 MongoDB 数据库
 
 # MongoDB
@@ -407,5 +526,19 @@ function (err, ret) {
 }) 
 ```
 
-
+- MongoDB 数据库
+  + MongoDB 的数据存储结构
+    + 数据库
+    + 集合（表）
+    + 文档 （表记录）
+  + MongoDB 官方有一个 mongodb 的包可以用来操作 MongoDB 数据库
+    + 这个确实强大，但是比较原始，麻烦，不使用它
+  + mongoose
+    + 真正的开发，使用的是 mongoose 这个第三方包
+    + 它是基于 MongoDB 官方的 MongoDB 包进一步做了封装
+    + 可以提高开发效率
+    + 让你操作 MongoDB 数据库更方便
+  + 掌握使用 Mongoose 对数据集合进行基本的 CRUD
+  + 把之前的 crud 案例改为了 MongoDB 数据库版本
+  + 使用  Node 操作 mysql 数据库
 
