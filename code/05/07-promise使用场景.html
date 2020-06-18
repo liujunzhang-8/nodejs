@@ -22,9 +22,13 @@
 
     <script>
         // 用户表
-            // 获取用户数据
+            // 其中一个接口获取用户数据
+            // 职业：2
         // 职业信息表
-            // 获取所有的职业信息
+            // 其中一个接口获取所有的职业信息
+        get('http://127.0.0.1:3000/users/4', function (data) {
+            data = JSON.parse(data)
+        })
     </script>
 </body>
 </html>
